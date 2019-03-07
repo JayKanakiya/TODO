@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/item.dart';
 
+  final colorIndigo = const Color(0xff4B0091);
+  final colorCyan = const Color(0xff97C7CE);
+  final colorMagenta = const Color(0xff5C1135);
+
 void main() => runApp(MyApp());
 
 
@@ -11,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: new HomePage(),
+      theme: ThemeData(fontFamily: 'Raleway'),
     );
   }
 }
@@ -55,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               content: new TextField(
                 controller: tec,
                 decoration: new InputDecoration.collapsed(
-                  hintText: "Eg: Call Jay"
+                  hintText: "Call Jay"
                 ),
                 onSubmitted: (String s){
 
@@ -99,17 +104,21 @@ class _HomePageState extends State<HomePage> {
 class MakeTile extends StatelessWidget {
   String s;
   int i;
-  List colors = [Colors.indigo, Colors.cyan, Colors.red];
+
+  List colors = [colorIndigo, colorCyan, colorMagenta];
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 15.0, right: 15.0),
-      height: 200.0,
+      margin: EdgeInsets.only(left: 10.0, right: 5.0, top: 150.0),
+      height: 240.0,
       child: new Container(
-            width: 160.0,
-            color: colors[i%3],
-            padding: EdgeInsets.only(left:35.0,top: 60.0),
-            child: new Text(s, style: TextStyle(color: Colors.white, fontSize: 25.0)),
+            decoration: new BoxDecoration(
+              color: colors[i%3],
+              borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
+            ),
+            width: 170.0,
+            padding: EdgeInsets.only(top: 60.0),
+            child: new Text(s, style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: 'Raleway'), textAlign: TextAlign.center),
       ),
     );
   }
