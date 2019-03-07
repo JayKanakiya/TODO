@@ -1,4 +1,5 @@
 class Item{
-  String title;
+  String title = '';
+  // String description = '';
   Item(this.title);
 }

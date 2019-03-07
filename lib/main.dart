@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-// import 'package:myapp/item.dart';
-
+import 'package:myapp/item.dart';
 
 void main() => runApp(MyApp());
-String res="";
-// List<String> items = ["Jay"];
-// // items.add(503)
-// items.add("vee");
+
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',      
-        home: new HomePage(), 
-
+      title: 'Flutter Demo',
+      home: new HomePage(),
     );
   }
 }
@@ -26,84 +21,98 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    int _count = 0;
-    // String res="";
-    @override
-    Widget build(BuildContext context) {
-        List<Widget> _itemlist = new List.generate(_count, (int i) => new itemList());
 
-        return Scaffold(
-            body: new Container(
-            child: new Column(
-                children: <Widget>[
-                    Text('TODO LIST'),
-                    Container(
-                        margin: EdgeInsets.only(bottom: 50.0, top: 50.0),
-                        child: new TextField(
 
-                        onChanged: (text){
-                            res = text;
-                            // items.add(res);
-                        },
-                        
-                    ),
-                    ),
-                    Container(
-                        height: 200.0,
-                        child: new ListView(
-                        padding: EdgeInsets.only(left:15.0),
-                        children: _itemlist,
-                        scrollDirection: Axis.horizontal,
-                        ),
-                    ),
-                    
-                    Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: new RaisedButton(
-                            onPressed: _addNewItem,
-                            child: new Icon(Icons.add),
-                        ),
-                    ),
-                    RaisedButton(
-                        onPressed: _removeItem,
-                        child: new Icon(Icons.delete),
-                    ),
-                ],
-            ),
-            ),
-        );
-    }
-    void _removeItem(){
-        setState(() {
-            _count = _count - 1;          
-        });  
-    }
-    void _addNewItem(){
-        setState(() {
-            _count = _count + 1;
-            // items.add(res);
-            
-        });
-    }
-}
 
-class itemList extends StatefulWidget {
-  @override
-  _itemListState createState() => _itemListState();
-}
-
-class _itemListState extends State<itemList> {
+  bool showBox = false;
+  TextEditingController tec = new TextEditingController();
+  List<String> itemList = [];
+  
   @override
   Widget build(BuildContext context) {
-    return new Container(
-        // margin: EdgeInsets.symmetric(vertical: 0.0),
-        height: 300.0,
-        padding: EdgeInsets.only(left: 40.0),
-        margin: EdgeInsets.only(top:0.0,left: 20.0),
-        width: 160.0,
-        color: Colors.red,
-        child: new Text(res, style: TextStyle(color: Colors.white, fontSize: 10.0),),
-    
-        );
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text("Notes"),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.add),
+            onPressed: (){
+              setState(() {
+                showBox = true;                
+              });
+              
+            },
+          ),
+        ],
+      ),
+
+      body: new Container(
+        child: new Column(
+          children: <Widget>[
+            showBox == true?
+            new AlertDialog(
+              title: new Text("Add Note"),
+              content: new TextField(
+                controller: tec,
+                decoration: new InputDecoration.collapsed(
+                  hintText: "Eg: Call Jay"
+                ),
+                onSubmitted: (String s){
+
+                },
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: (){
+                    setState(() {
+                      showBox = false;  
+                      itemList.add(tec.text);
+                      tec.clear();              
+                    });
+                  },
+                  child: new Text("Add"),
+                ),
+              ],
+            ) : new Text(""),
+
+            new Flexible(
+              child: new ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: itemList.length,
+                itemBuilder: (BuildContext ctxt, int index){
+                  return new Column(
+                    children: <Widget>[
+                      new MakeTile(itemList[index],index),
+                    ],
+                  );
+                }
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
   }
+}
+
+class MakeTile extends StatelessWidget {
+  String s;
+  int i;
+  List colors = [Colors.indigo, Colors.cyan, Colors.red];
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 15.0, right: 15.0),
+      height: 200.0,
+      child: new Container(
+            width: 160.0,
+            color: colors[i%3],
+            padding: EdgeInsets.only(left:35.0,top: 60.0),
+            child: new Text(s, style: TextStyle(color: Colors.white, fontSize: 25.0)),
+      ),
+    );
+  }
+
+  MakeTile(this.s,this.i);
 }
